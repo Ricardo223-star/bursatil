@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#08111f">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Bolsa & CEDEARs">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <title>Analizador Bolsa &amp; CEDEARs</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="app-shell">
+    <header class="app-header">
+      <div>
+        <p class="eyebrow">Mercado local + CEDEARs + EE.UU.</p>
+        <h1>Analizador Bolsa &amp; CEDEARs</h1>
+        <p class="build-line"><span id="appVersion">v1.0</span> · <span id="appDate">28/05/2026</span></p>
+      </div>
+      <div class="header-chip">Daily</div>
+    </header>
+
+    <section class="search-card">
+      <label class="field-label" for="tickerInput">Ticker</label>
+      <div class="search-row">
+        <input id="tickerInput" type="text" inputmode="latin" autocomplete="off" spellcheck="false" placeholder="Ej: GGAL, AAPL, SPY, YPFD, BYMA">
+        <button id="analyzeBtn" type="button">Analizar</button>
+      </div>
+      <p class="helper-text">La app prueba el ticker ingresado y, si corresponde, también la variante <code>.BA</code>. Si ambas responden, prioriza la versión local.</p>
+    </section>
+
+    <section class="status-card">
+      <div class="status-top">
+        <div>
+          <p class="status-label">Símbolo usado</p>
+          <p class="status-value" id="resolvedSymbol">-</p>
+        </div>
+        <div>
+          <p class="status-label">Análisis</p>
+          <p class="status-value small" id="analysisTimestamp">-</p>
+        </div>
+      </div>
+      <div class="status-bottom">
+        <span class="source-chip">Fuente actual: Yahoo Finance</span>
+        <span class="source-chip muted">BYMA / BYMADATA: futura opción</span>
+      </div>
+    </section>
+
+    <section class="signal-card signal-neutral" id="signalCard">
+      <div class="signal-meta">
+        <div>
+          <p class="signal-label">Recomendación</p>
+          <h2 id="recommendationText">Esperando análisis</h2>
+        </div>
+        <div class="trend-box">
+          <p class="signal-label">Tendencia</p>
+          <p class="trend-value" id="trendText">-</p>
+        </div>
+      </div>
+      <p class="signal-copy" id="reasonText">Ingresá un ticker y tocá “Analizar”.</p>
+    </section>
+
+    <section class="grid cards-grid">
+      <article class="metric-card">
+        <p class="metric-label">Precio / cierre</p>
+        <p class="metric-value" id="priceValue">-</p>
+        <p class="metric-sub" id="changeValue">-</p>
+      </article>
+      <article class="metric-card">
+        <p class="metric-label">Volumen</p>
+        <p class="metric-value" id="volumeValue">-</p>
+        <p class="metric-sub">Última rueda disponible</p>
+      </article>
+      <article class="metric-card">
+        <p class="metric-label">RSI 14</p>
+        <p class="metric-value" id="rsiValue">-</p>
+        <p class="metric-sub" id="rsiState">-</p>
+      </article>
+      <article class="metric-card">
+        <p class="metric-label">Contexto</p>
+        <p class="metric-value" id="contextValue">-</p>
+        <p class="metric-sub" id="distanceSummary">-</p>
+      </article>
+    </section>
+
+    <section class="indicator-card">
+      <div class="section-head">
+        <h3>EMAs y niveles</h3>
+        <span class="section-chip">Diario</span>
+      </div>
+      <div class="indicators-grid">
+        <div class="indicator-row"><span>EMA 21</span><strong id="ema21Value">-</strong></div>
+        <div class="indicator-row"><span>EMA 50</span><strong id="ema50Value">-</strong></div>
+        <div class="indicator-row"><span>EMA 200</span><strong id="ema200Value">-</strong></div>
+        <div class="indicator-row"><span>Distancia EMA 21</span><strong id="dist21Value">-</strong></div>
+        <div class="indicator-row"><span>Distancia EMA 50</span><strong id="dist50Value">-</strong></div>
+        <div class="indicator-row"><span>Distancia EMA 200</span><strong id="dist200Value">-</strong></div>
+      </div>
+    </section>
+
+    <section class="explanation-card">
+      <div class="section-head">
+        <h3>Lectura técnica</h3>
+        <span class="section-chip">Resumen</span>
+      </div>
+      <ul class="bullet-list" id="explanationList">
+        <li>Todavía no hay datos cargados.</li>
+      </ul>
+    </section>
+
+    <section class="notice-card" id="errorCard" hidden>
+      <p id="errorText">No se pudo obtener información confiable para este ticker.</p>
+    </section>
+
+    <footer class="footer-notes">
+      <p class="legal-note">Esta app no brinda asesoramiento financiero. Es solo una herramienta de análisis técnico para uso personal.</p>
+      <p class="source-note">Si Yahoo Finance no responde o limita la consulta, la app puede quedarse sin datos. La estructura ya queda preparada para conectar BYMA / BYMADATA más adelante.</p>
+    </footer>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
